@@ -127,6 +127,7 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    opacity: 1;
 }
 
 .upgrade-item:hover:not(.locked) {
@@ -138,11 +139,20 @@ body {
 .upgrade-item.locked {
     opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
 .upgrade-item.affordable {
     border-color: #67e8f9;
     background: rgba(103, 232, 249, 0.15);
+    opacity: 1;
+}
+
+.upgrade-item.affordable:hover {
+    background: rgba(103, 232, 249, 0.25);
+    border-color: #67e8f9;
+    transform: translateX(4px);
+    box-shadow: 0 0 15px rgba(103, 232, 249, 0.3);
 }
 
 .upgrade-header {
