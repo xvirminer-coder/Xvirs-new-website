@@ -227,7 +227,6 @@ class OrbClicker {
             generators: this.generators,
         };
         localStorage.setItem('orbClickerSave', JSON.stringify(saveData));
-        alert('Game saved!');
     }
 
     loadGame() {
@@ -242,13 +241,11 @@ class OrbClicker {
     }
 
     resetGame() {
-        if (confirm('Reset all progress? This cannot be undone.')) {
-            this.state = { totalOrbs: 0, orbsPerClick: 1, totalClicks: 0, clicksThisSecond: 0 };
-            this.clickUpgrades.forEach(u => u.owned = 0);
-            this.generators.forEach(g => g.owned = 0);
-            this.updateUI();
-            localStorage.removeItem('orbClickerSave');
-        }
+        this.state = { totalOrbs: 0, orbsPerClick: 1, totalClicks: 0, clicksThisSecond: 0 };
+        this.clickUpgrades.forEach(u => u.owned = 0);
+        this.generators.forEach(g => g.owned = 0);
+        this.updateUI();
+        localStorage.removeItem('orbClickerSave');
     }
 
     startGameLoop() {
