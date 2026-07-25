@@ -13,7 +13,7 @@
 
 body {
   margin: 0;
-  font-family: Inter, Arial, sans-serif;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif;
   background: linear-gradient(135deg, var(--bg), #142c44);
   color: var(--text);
   line-height: 1.6;
@@ -61,6 +61,7 @@ h1 {
   font-size: 1.1rem;
   color: var(--muted);
   margin: 1rem auto 2rem;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
 }
 
 .button {

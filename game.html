@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Orb Collector - Idle Game</title>
+    <link rel="stylesheet" href="game.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="stats-display">
+                <div class="stat">
+                    <span class="label">Energy Orbs</span>
+                    <span class="value" id="totalOrbs">0</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Per Second</span>
+                    <span class="value" id="orbsPerSecond">0</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Level</span>
+                    <span class="value" id="level">1</span>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="settingsBtn" class="icon-btn">⚙️</button>
+                <button id="statsBtn" class="icon-btn">📊</button>
+                <button id="achievementsBtn" class="icon-btn">🏆</button>
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <div class="game-area">
+            <!-- Left Panel - Upgrades -->
+            <div class="upgrades-panel">
+                <h2>Upgrades</h2>
+                <div class="upgrade-filter">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="available">Available</button>
+                    <button class="filter-btn" data-filter="locked">Locked</button>
+                </div>
+                <div id="upgradesContainer" class="upgrades-list"></div>
+            </div>
+
+            <!-- Center - Clicker -->
+            <div class="clicker-section">
+                <div class="orb-info">
+                    <div id="cpsDisplay" class="cps-display">0 clicks/sec</div>
+                </div>
+                <div id="orbClickable" class="orb">
+                    <div class="orb-glow"></div>
+                </div>
+                <div id="floatingNumbers" class="floating-numbers"></div>
+                <div class="clicker-buttons">
+                    <button id="ascensionBtn" class="action-btn ascension-btn">
+                        <span class="btn-title">Ascension</span>
+                        <span class="btn-desc">Reset & Gain Bonuses</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Panel - Info -->
+            <div class="info-panel">
+                <div class="progression">
+                    <h3>Level Progress</h3>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <p id="progressText">0 / 1000</p>
+                </div>
+                <div class="daily-reward">
+                    <h3>Daily Reward</h3>
+                    <button id="dailyRewardBtn" class="action-btn">Claim Reward</button>
+                    <p id="dailyRewardText">Available in 24h</p>
+                </div>
+                <div class="active-events">
+                    <h3>Events</h3>
+                    <div id="eventsContainer" class="events-list">
+                        <p class="empty">No active events</p>
+                    </div>
+                </div>
+                <div class="save-buttons">
+                    <button id="saveBtn" class="action-btn small">Save</button>
+                    <button id="loadBtn" class="action-btn small">Load</button>
+                    <button id="resetBtn" class="action-btn small danger">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="soundToggle" checked>
+                        Sound Effects
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="animationsToggle" checked>
+                        Animations
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>Volume: <span id="volumeValue">100</span>%</label>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="100">
+                </div>
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="numberFormatToggle">
+                        Scientific Notation
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>Auto-save Interval: <span id="autosaveValue">10</span>s</label>
+                    <input type="range" id="autosaveSlider" min="5" max="60" value="10" step="5">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Statistics</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="stat-row">
+                    <span>Total Clicks:</span>
+                    <span id="statTotalClicks">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Total Orbs Earned:</span>
+                    <span id="statTotalEarned">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Play Time:</span>
+                    <span id="statPlayTime">0m</span>
+                </div>
+                <div class="stat-row">
+                    <span>Upgrades Purchased:</span>
+                    <span id="statUpgradesPurchased">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Ascensions:</span>
+                    <span id="statAscensions">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Current Multiplier:</span>
+                    <span id="statMultiplier">1x</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievements Modal -->
+    <div id="achievementsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Achievements</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="achievementsContainer" class="achievements-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>
