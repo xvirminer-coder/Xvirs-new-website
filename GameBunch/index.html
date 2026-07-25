@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xvir | Personal Website</title>
+    <meta name="description" content="Welcome to Xvir's personal website." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <canvas id="nebula-canvas"></canvas>
+    <header class="hero">
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="hero-content" id="home">
+        <p class="eyebrow">Welcome to</p>
+        <h1>GameBunch</h1>
+        <p class="tagline">A website full of games.</p>
+        <a class="button" href="#contact">Get In Touch</a>
+        <a class="button game-btn" href="game.html">Orb Clicker</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="section" id="about">
+        <h2>About Me</h2>
+        <p>
+          I’m a creative developer and lifelong learner who enjoys turning ideas into polished,
+          user-friendly websites.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>What I Do</h2>
+        <div class="cards">
+          <article>
+            <h3>Web Development</h3>
+            <p>Crafting responsive websites with modern design and clean structure.</p>
+          </article>
+          <article>
+            <h3>Design Thinking</h3>
+            <p>Focusing on clarity, accessibility, and meaningful user experiences.</p>
+          </article>
+          <article>
+            <h3>Continuous Learning</h3>
+            <p>Exploring new tools, languages, and creative approaches every day.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="contact">
+      <h2>Contact</h2>
+      <p>Reach out for collaborations, ideas, or just to say hello.</p>
+      <a class="button" href="mailto:xvirminer@gmail.com">xvirminer@gmail.com</a>
+    </footer>
+
+    <script>
+      // Nebula Canvas Background
+      const canvas = document.getElementById('nebula-canvas');
+      const ctx = canvas.getContext('2d');
+      let animationFrameId;
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function drawNebula(time) {
+        // Clear canvas
+        ctx.fillStyle = '#050a15';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw nebula clouds with Perlin-like noise simulation
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Purple cloud layer 1
+        ctx.globalAlpha = 0.3;
+        for (let i = 0; i < 3; i++) {
+          const x = centerX + Math.sin(time * 0.0003 + i) * 200;
+          const y = centerY + Math.cos(time * 0.0002 + i) * 200;
+          const radius = 300 + Math.sin(time * 0.0001 + i * 2) * 50;
+          
+          const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+          gradient.addColorStop(0, 'rgba(147, 51, 234, 0.4)');
+          gradient.addColorStop(0.5, 'rgba(147, 51, 234, 0.1)');
+          gradient.addColorStop(1, 'transparent');
+          
+          ctx.fillStyle = gradient;
+          ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+        }
+
+        // Blue cloud layer 2
+        ctx.globalAlpha = 0.25;
+        for (let i = 0; i < 3; i++) {
+          const x = centerX + Math.cos(time * 0.00025 + i * 1.5) * 250;
+          const y = centerY + Math.sin(time * 0.00015 + i * 1.5) * 250;
+          const radius = 350 + Math.cos(time * 0.00012 + i * 2.5) * 60;
+          
+          const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+          gradient.addColorStop(0, 'rgba(59, 130, 246, 0.3)');
+          gradient.addColorStop(0.6, 'rgba(59, 130, 246, 0.05)');
+          gradient.addColorStop(1, 'transparent');
+          
+          ctx.fillStyle = gradient;
+          ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+        }
+
+        // Draw minimal stars (20 stars total)
+        ctx.globalAlpha = 0.6;
+        const starSeed = 12345;
+        
+        for (let i = 0; i < 20; i++) {
+          // Pseudo-random star positions
+          const rand1 = Math.sin(starSeed * 12.9898 + i * 78.233) * 43758.5453;
+          const rand2 = Math.sin(starSeed * 23.1405 + i * 45.164) * 43758.5453;
+          
+          const x = (rand1 - Math.floor(rand1)) * canvas.width;
+          const y = (rand2 - Math.floor(rand2)) * canvas.height;
+          const size = Math.abs(Math.sin(starSeed + i)) * 0.8 + 0.3;
+          
+          // Draw star
+          ctx.fillStyle = 'rgba(255, 255, 255, ' + (0.5 + Math.sin(time * 0.001 + i) * 0.5) + ')';
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Draw soft glow orb area
+        ctx.globalAlpha = 0.15;
+        const glowGradient = ctx.createRadialGradient(centerX, centerY, 100, centerX, centerY, 500);
+        glowGradient.addColorStop(0, 'rgba(168, 85, 247, 0.8)');
+        glowGradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.3)');
+        glowGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = glowGradient;
+        ctx.fillRect(centerX - 500, centerY - 500, 1000, 1000);
+
+        ctx.globalAlpha = 1;
+        animationFrameId = requestAnimationFrame(drawNebula);
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      drawNebula(0);
+
+      // Stop animation when page is not visible
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          cancelAnimationFrame(animationFrameId);
+        } else {
+          drawNebula(Date.now());
+        }
+      });
+    </script>
+  </body>
+</html>
